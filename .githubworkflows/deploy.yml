@@ -1,28 +1,21 @@
-name: Deploy to AWS EC2
+name: Deploy to Server
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+      - name: SSH & Deploy
+        uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          host: your_server_ip  # 替换为你的服务器IP
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/flask-cicd-demo
-            git reset --hard origin/main
-            source venv/bin/activate
-            pip install -r requirements.txt
+            cd /home/ubuntu/flask-cicd-demo
+            git pull origin main
             sudo systemctl restart flaskapp
-
-
+            curl -s http://localhost | grep -q "你的关键内容"  # 验证更新
