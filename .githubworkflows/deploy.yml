@@ -2,7 +2,7 @@ name: Deploy to AWS EC2
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   deploy:
@@ -12,12 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -26,8 +20,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ~/flask-cicd-demo
-            git pull origin master
+            git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl restart flaskapp
+
 
