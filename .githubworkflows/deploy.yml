@@ -16,6 +16,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/flask-cicd-demo
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main  # 强制同步代码
+            /home/ubuntu/flask-cicd-demo/venv/bin/pip install -r requirements.txt
             sudo systemctl restart flaskapp
-            curl -s http://localhost | grep -q "你的关键内容"  # 验证更新
+            sleep 5  # 等待服务启动
+            curl -v http://localhost  # 打印详细响应
