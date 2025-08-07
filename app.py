@@ -3,4 +3,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return "逗比"
+    return "看了吗 能不能触发cicd"
