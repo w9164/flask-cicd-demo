@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ~/flask-cicd-demo
-            git pull origin main
+            git reset --hard origin/main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl restart flaskapp
